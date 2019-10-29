@@ -1,0 +1,25 @@
+﻿<Window x:Class="FeriaVirtual.Vista.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FeriaVirtual.Vista"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="745.798" Width="1071.008" Background="Green">
+        <Grid HorizontalAlignment="Left" Width="200">
+        <GroupBox BorderThickness="2" BorderBrush="Aqua" VerticalAlignment="Center">
+            <GroupBox.Header>
+                <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Mantenedores</TextBlock>
+            </GroupBox.Header>
+            <StackPanel Grid.Column="0" Height="600" VerticalAlignment="Top">
+                <Button Name="btnClientes" Height="40" Margin="0,50,0,10" FontFamily="Impact" Click="BtnClientes_Click">Clientes</Button>
+                <Button Name="btnTransportistas" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnTransportistas_Click">Transportistas</Button>
+                <Button Name="btnProductores" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnProductores_Click">Productores</Button>
+                <Button Name="btnComerciantes" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnComerciantes_Click">Comerciantes</Button>
+                <Button Name="btnConsultores" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnConsultores_Click">Consultores</Button>
+                <Button Name="btnContratos" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnContratos_Click">Contratos</Button>
+            </StackPanel>
+        </GroupBox>
+        <Frame x:Name ="Main" Height="650" Width="850"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Margin="205,22,-855,43"/>
+    </Grid>
+</Window>
