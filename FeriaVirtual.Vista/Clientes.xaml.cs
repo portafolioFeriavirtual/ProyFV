@@ -120,7 +120,7 @@ namespace FeriaVirtual.Vista
                 comando.ExecuteNonQuery();
                 MessageBox.Show("Cliente Actualizado.");
                 limpiar();
-
+                
             }
             catch (Exception)
             {
