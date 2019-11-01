@@ -19,27 +19,26 @@ using System.Data;
 namespace FeriaVirtual.Vista
 {
     /// <summary>
-    /// Interaction logic for Clientes.xaml
+    /// Interaction logic for Productores.xaml
     /// </summary>
-    public partial class Clientes : Page
+    public partial class Productores : Page
     {
 
 
         ConexionOracle conn = new ConexionOracle();
-
-        public Clientes()
+      
+        public Productores()
         {
             InitializeComponent();
         }
 
-        private void ListarClientes()
+        private void ListarProductores()
         {
             OracleConnection ora = conn.Conexion();
             ora.Open();
-            OracleCommand comando = new OracleCommand("SP_LISTAR_USUARIOS_ROL", ora);
+            OracleCommand comando = new OracleCommand("SP_LISTAR_PRODUCTORES", ora);
             comando.CommandType = System.Data.CommandType.StoredProcedure;
             comando.Parameters.Add("V_CURSOR", OracleType.Cursor).Direction = System.Data.ParameterDirection.Output;
-            comando.Parameters.Add("p_ID_ROL", OracleType.Number).Value = 1;
             comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
             comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
@@ -47,21 +46,20 @@ namespace FeriaVirtual.Vista
             DataTable tabla = new DataTable();
             tabla.Load(dr);
 
-            dgClientes.ItemsSource = tabla.DefaultView; ;
+            dgProductores.ItemsSource = tabla.DefaultView; ;
 
             ora.Close();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ListarClientes();
+            ListarProductores();
         }
 
         private void limpiar()
         {
             txtRut.Text = "";
-            txtNombre.Text = "";
-            txtAppat.Text = "";
-            txtApmat.Text = "";
+            txtNombreUsuario.Text = "";
+            txtNombreProductor.Text = "";
             txtPass1.Password = "";
             txtPass2.Password = "";
             btnActualizar.IsEnabled = false;
@@ -78,27 +76,41 @@ namespace FeriaVirtual.Vista
                 OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
+                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
+                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
+                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
                 comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
                 comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
+                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
                 comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
+
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Ingresado.");
+                int userID = Convert.ToInt32(comando.Parameters["OUT_ID"].Value);
+                comando.Parameters.Clear();
+
+                OracleCommand comando2 = new OracleCommand("SP_INGRESAR_PRODUCTOR", ora);
+                comando2.CommandType = System.Data.CommandType.StoredProcedure;
+                comando2.Parameters.Add("P_ID_USUARIO", OracleType.Number).Value = userID;
+                comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
+                comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
+                comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                               
+                comando2.ExecuteNonQuery();
+                MessageBox.Show("Productor Ingresado.");
 
             }
             catch (Exception)
             {
                 MessageBox.Show("Error al ingresar.");
             }
-            
 
-            ListarClientes();
+
+            ListarProductores();
             ora.Close();
 
         }
@@ -109,20 +121,32 @@ namespace FeriaVirtual.Vista
             try
             {
                 ora.Open();
+
+                OracleCommand comando2 = new OracleCommand("SP_UPDATE_PRODUCTOR", ora);
+                comando2.CommandType = System.Data.CommandType.StoredProcedure;
+                comando2.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number, 4).Value = Convert.ToInt32(txtProductorId.Text);
+                comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
+                comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
+                comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
+                comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                comando2.ExecuteNonQuery();
+                
+
                 OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
+                comando.Parameters.Add("P_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
+                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
+                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
                 comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
                 comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
+                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Actualizado.");
+                MessageBox.Show("Productor Actualizado.");
                 limpiar();
                 
             }
@@ -132,20 +156,20 @@ namespace FeriaVirtual.Vista
             }
 
 
-            ListarClientes();
+            ListarProductores();
             ora.Close();
         }
 
-        private void DgClientes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DgProductores_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dg = sender as DataGrid;
             DataRowView dr = dg.SelectedItem as DataRowView;
             if (dr != null)
             {
                 txtRut.Text = dr["RUT_USUARIO"].ToString();
-                txtNombre.Text = dr["NOMBRE_USUARIO"].ToString();
-                txtAppat.Text = dr["AP_PATERNO"].ToString();
-                txtApmat.Text = dr["AP_MATERNO"].ToString();
+                txtNombreUsuario.Text = dr["NOMBRE_USUARIO"].ToString();
+                txtNombreProductor.Text = dr["NOMBRE_PRODUCTOR"].ToString();
+                txtProductorId.Text = dr["ID_PRODUCTOR"].ToString();
                 btnActualizar.IsEnabled = true;
                 btnIngresar.IsEnabled = false;
                 btnEliminar.IsEnabled = true; 
@@ -163,6 +187,15 @@ namespace FeriaVirtual.Vista
             try
             {
                 ora.Open();
+            
+                OracleCommand comando2 = new OracleCommand("SP_DELETE_PRODUCTOR", ora);
+                comando2.CommandType = System.Data.CommandType.StoredProcedure;
+                comando2.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number,4).Value = Convert.ToInt32(txtProductorId.Text);
+                comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                comando2.ExecuteNonQuery();
+
                 OracleCommand comando = new OracleCommand("SP_DELETE_USUARIO", ora);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
@@ -170,7 +203,7 @@ namespace FeriaVirtual.Vista
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Eliminado.");
+                MessageBox.Show("Productor Eliminado.");
                 limpiar();
 
             }
@@ -179,7 +212,7 @@ namespace FeriaVirtual.Vista
                 MessageBox.Show("Error al eliminar.");
             }
 
-            ListarClientes();
+            ListarProductores();
             ora.Close();
         }
     }

@@ -1,4 +1,4 @@
-﻿<Page x:Class="FeriaVirtual.Vista.Clientes"
+﻿<Page x:Class="FeriaVirtual.Vista.Comerciante"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:FeriaVirtual.Vista"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="Clientes" Height="650" Width="850" Background="Green" Loaded="Window_Loaded">
+      Title="Comerciantes" Height="650" Width="850" Background="Green" Loaded="Window_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,7 +21,7 @@
 
             <GroupBox BorderThickness="2" BorderBrush="Aqua" Height="600" Width="800"  Margin="24,40,26,10" VerticalAlignment="Center" Grid.ColumnSpan="2">
                 <GroupBox.Header>
-                    <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Ficha Clientes</TextBlock>
+                    <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Ficha Comerciantes</TextBlock>
                 </GroupBox.Header>
                 <Button x:Name="btnIngresar" Content="Ingresar" HorizontalAlignment="Left" Margin="80,224,0,0" VerticalAlignment="Top" Width="104" Click="BtnIngresar_Click" Height="26"/>
             </GroupBox>
@@ -41,7 +41,7 @@
         <Button x:Name="btnActualizar" Content="Actualizar" Margin="237,291,367,336" Width="103" Click="BtnActualizar_Click" IsEnabled="False"/>
         <Button x:Name="btnEliminar" Content="Eliminar" Margin="365,291,239,336" Width="103" Click="BtnEliminar_Click" IsEnabled="False"/>
         <Button x:Name="btnLimpiar" Content="Limpiar" Margin="604,291,0,336" Width="103" Click="BtnLimpiar_Click" IsEnabled="True"/>
-        <DataGrid x:Name="dgClientes" Height="226" Margin="59,360,0,64" Width="724" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontFamily="Impact" IsEnabled="True" SelectionChanged="DgClientes_SelectionChanged"/>
+        <DataGrid x:Name="dgComerciantes" Height="226" Margin="59,360,0,64" Width="724" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontFamily="Impact" IsEnabled="True" SelectionChanged="DgComerciantes_SelectionChanged"/>
         <StackPanel x:Name="stLabels_Copy" HorizontalAlignment="Left" Height="186" Margin="506,86,0,0" VerticalAlignment="Top" Width="108">
             <Label x:Name="lblPass1" Margin="0,10,0,10" FontFamily="Impact" Content="Contraseña"/>
             <Label x:Name="lblPass2" Margin="0,10,0,10" FontFamily="Impact" Content="Repetir Contraseña"/>

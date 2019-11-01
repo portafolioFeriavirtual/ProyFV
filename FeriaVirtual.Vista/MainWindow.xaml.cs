@@ -35,22 +35,22 @@ namespace FeriaVirtual.Vista
         
         private void BtnTransportistas_Click(object sender, RoutedEventArgs e)
         {
-            //Main.Content = new Transportistas();
+            Main.Content = new Transportistas();
         }
 
         private void BtnProductores_Click(object sender, RoutedEventArgs e)
         {
-           // Main.Content = new Productores();
+            Main.Content = new Productores();
         }
 
         private void BtnComerciantes_Click(object sender, RoutedEventArgs e)
         {
-            //Main.Content = new Comerciantes();
+            Main.Content = new Comerciante();
         }
 
         private void BtnConsultores_Click(object sender, RoutedEventArgs e)
         {
-            //Main.Content = new Consultores();
+            Main.Content = new Consultores();
         }
 
         private void BtnContratos_Click(object sender, RoutedEventArgs e)
@@ -58,23 +58,5 @@ namespace FeriaVirtual.Vista
            // Main.Content = new Contratos();
         }
 
-        /*private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ConexionOracle conn = new ConexionOracle();
-            OracleConnection ora = conn.Conexion();
-
-            ora.Open();
-            OracleCommand comando = new OracleCommand("SP_LISTAR_USUARIOS",ora);
-            comando.CommandType = System.Data.CommandType.StoredProcedure;
-            comando.Parameters.Add("V_CURSOR", OracleType.Cursor).Direction =System.Data.ParameterDirection.Output;
-            comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar,50).Direction = System.Data.ParameterDirection.Output;
-            comando.Parameters.Add("OUT_ESTADO", OracleType.Number,1).Direction = System.Data.ParameterDirection.Output;
-
-            OracleDataReader dr = comando.ExecuteReader();
-            DataTable tabla = new DataTable();
-            tabla.Load(dr);
-
-            dgClientes.ItemsSource = tabla.DefaultView; ;
-        }*/
     }
 }

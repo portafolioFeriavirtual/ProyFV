@@ -56,6 +56,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Contratos.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Productores.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Consultores.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Comerciante.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Transportistas.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Clientes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -67,6 +87,21 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Contratos.xaml.cs">
+      <DependentUpon>Contratos.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Productores.xaml.cs">
+      <DependentUpon>Productores.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Consultores.xaml.cs">
+      <DependentUpon>Consultores.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Comerciante.xaml.cs">
+      <DependentUpon>Comerciante.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Transportistas.xaml.cs">
+      <DependentUpon>Transportistas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Clientes.xaml.cs">
       <DependentUpon>Clientes.xaml</DependentUpon>

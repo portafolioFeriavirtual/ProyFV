@@ -19,27 +19,27 @@ using System.Data;
 namespace FeriaVirtual.Vista
 {
     /// <summary>
-    /// Interaction logic for Clientes.xaml
+    /// Interaction logic for Transportistas.xaml
     /// </summary>
-    public partial class Clientes : Page
+    public partial class Transportistas : Page
     {
 
 
         ConexionOracle conn = new ConexionOracle();
 
-        public Clientes()
+        public Transportistas()
         {
             InitializeComponent();
         }
 
-        private void ListarClientes()
+        private void ListarTransportistas()
         {
             OracleConnection ora = conn.Conexion();
             ora.Open();
             OracleCommand comando = new OracleCommand("SP_LISTAR_USUARIOS_ROL", ora);
             comando.CommandType = System.Data.CommandType.StoredProcedure;
             comando.Parameters.Add("V_CURSOR", OracleType.Cursor).Direction = System.Data.ParameterDirection.Output;
-            comando.Parameters.Add("p_ID_ROL", OracleType.Number).Value = 1;
+            comando.Parameters.Add("p_ID_ROL", OracleType.Number).Value = 2;
             comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
             comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
@@ -47,13 +47,13 @@ namespace FeriaVirtual.Vista
             DataTable tabla = new DataTable();
             tabla.Load(dr);
 
-            dgClientes.ItemsSource = tabla.DefaultView; ;
+            dgTransportistas.ItemsSource = tabla.DefaultView; ;
 
             ora.Close();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ListarClientes();
+            ListarTransportistas();
         }
 
         private void limpiar()
@@ -83,22 +83,21 @@ namespace FeriaVirtual.Vista
                 comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
                 comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
                 comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
+                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
                 comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Ingresado.");
+                MessageBox.Show("Transportista Ingresado.");
 
             }
             catch (Exception)
             {
                 MessageBox.Show("Error al ingresar.");
             }
-            
 
-            ListarClientes();
+
+            ListarTransportistas();
             ora.Close();
 
         }
@@ -117,12 +116,13 @@ namespace FeriaVirtual.Vista
                 comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
                 comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
                 comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
+                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
                 comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Actualizado.");
+                MessageBox.Show("Transportista Actualizado.");
                 limpiar();
                 
             }
@@ -132,11 +132,11 @@ namespace FeriaVirtual.Vista
             }
 
 
-            ListarClientes();
+            ListarTransportistas();
             ora.Close();
         }
 
-        private void DgClientes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DgTransportistas_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dg = sender as DataGrid;
             DataRowView dr = dg.SelectedItem as DataRowView;
@@ -170,7 +170,7 @@ namespace FeriaVirtual.Vista
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Eliminado.");
+                MessageBox.Show("Transportista Eliminado.");
                 limpiar();
 
             }
@@ -179,7 +179,7 @@ namespace FeriaVirtual.Vista
                 MessageBox.Show("Error al eliminar.");
             }
 
-            ListarClientes();
+            ListarTransportistas();
             ora.Close();
         }
     }

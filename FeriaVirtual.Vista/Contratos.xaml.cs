@@ -19,20 +19,20 @@ using System.Data;
 namespace FeriaVirtual.Vista
 {
     /// <summary>
-    /// Interaction logic for Clientes.xaml
+    /// Interaction logic for Contratos.xaml
     /// </summary>
-    public partial class Clientes : Page
+    public partial class Contratos : Page
     {
 
 
         ConexionOracle conn = new ConexionOracle();
 
-        public Clientes()
+        public Contratos()
         {
             InitializeComponent();
         }
 
-        private void ListarClientes()
+        private void ListarContratos()
         {
             OracleConnection ora = conn.Conexion();
             ora.Open();
@@ -47,13 +47,13 @@ namespace FeriaVirtual.Vista
             DataTable tabla = new DataTable();
             tabla.Load(dr);
 
-            dgClientes.ItemsSource = tabla.DefaultView; ;
+            dgContratos.ItemsSource = tabla.DefaultView; ;
 
             ora.Close();
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ListarClientes();
+            ListarContratos();
         }
 
         private void limpiar()
@@ -96,9 +96,9 @@ namespace FeriaVirtual.Vista
             {
                 MessageBox.Show("Error al ingresar.");
             }
-            
 
-            ListarClientes();
+
+            ListarContratos();
             ora.Close();
 
         }
@@ -132,11 +132,11 @@ namespace FeriaVirtual.Vista
             }
 
 
-            ListarClientes();
+            ListarContratos();
             ora.Close();
         }
 
-        private void DgClientes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DgContratos_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dg = sender as DataGrid;
             DataRowView dr = dg.SelectedItem as DataRowView;
@@ -179,7 +179,7 @@ namespace FeriaVirtual.Vista
                 MessageBox.Show("Error al eliminar.");
             }
 
-            ListarClientes();
+            ListarContratos();
             ora.Close();
         }
     }
