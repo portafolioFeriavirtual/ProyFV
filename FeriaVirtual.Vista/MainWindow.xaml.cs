@@ -55,7 +55,7 @@ namespace FeriaVirtual.Vista
 
         private void BtnContratos_Click(object sender, RoutedEventArgs e)
         {
-           // Main.Content = new Contratos();
+            Main.Content = new Contratos();
         }
 
     }

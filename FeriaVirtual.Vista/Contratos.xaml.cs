@@ -36,10 +36,9 @@ namespace FeriaVirtual.Vista
         {
             OracleConnection ora = conn.Conexion();
             ora.Open();
-            OracleCommand comando = new OracleCommand("SP_LISTAR_USUARIOS_ROL", ora);
+            OracleCommand comando = new OracleCommand("SP_LISTAR_CONTRATOS", ora);
             comando.CommandType = System.Data.CommandType.StoredProcedure;
             comando.Parameters.Add("V_CURSOR", OracleType.Cursor).Direction = System.Data.ParameterDirection.Output;
-            comando.Parameters.Add("p_ID_ROL", OracleType.Number).Value = 1;
             comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
             comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
@@ -51,51 +50,66 @@ namespace FeriaVirtual.Vista
 
             ora.Close();
         }
+
+        private void ListarProductoresCB()
+        {
+            OracleConnection ora = conn.Conexion();
+            ora.Open();
+            OracleCommand comando = new OracleCommand("SP_LISTAR_PRODUCTORES", ora);
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Parameters.Add("V_CURSOR", OracleType.Cursor).Direction = System.Data.ParameterDirection.Output;
+            comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+            comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+            OracleDataReader dr = comando.ExecuteReader();
+            DataTable tabla = new DataTable();
+            tabla.Load(dr);
+
+            cbProductor.ItemsSource = tabla.DefaultView;
+            cbProductor.SelectedValuePath = "ID_PRODUCTOR";
+            cbProductor.DisplayMemberPath = "NOMBRE_PRODUCTOR";
+
+            ora.Close();
+        }
+
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ListarContratos();
+            ListarProductoresCB();
         }
 
         private void limpiar()
         {
-            txtRut.Text = "";
-            txtNombre.Text = "";
-            txtAppat.Text = "";
-            txtApmat.Text = "";
-            txtPass1.Password = "";
-            txtPass2.Password = "";
+            cbProductor.SelectedValue = null;
+            dpInicio.SelectedDate = null;
+            dpFin.SelectedDate = null;
             btnActualizar.IsEnabled = false;
             btnIngresar.IsEnabled = true;
-            btnEliminar.IsEnabled = false; 
         }
 
         private void BtnIngresar_Click(object sender, RoutedEventArgs e)
         {
             OracleConnection ora = conn.Conexion();
-            try
-            {
+            /*try
+            {*/
                 ora.Open();
-                OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
+                OracleCommand comando = new OracleCommand("SP_INGRESAR_CONTRATO", ora);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
+                comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
+                comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
+                comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = cbProductor.SelectedValue;
                 comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Ingresado.");
+                MessageBox.Show("Contrato Ingresado.");
 
-            }
+            /*}
             catch (Exception)
             {
                 MessageBox.Show("Error al ingresar.");
-            }
+            }*/
 
 
             ListarContratos();
@@ -109,20 +123,16 @@ namespace FeriaVirtual.Vista
             try
             {
                 ora.Open();
-                OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
+                OracleCommand comando = new OracleCommand("SP_UPDATE_CONTRATO", ora);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 1;
+                comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = Convert.ToInt32(txtProductorId.Text);
+                comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
+                comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
                 comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                 comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
                 comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Actualizado.");
+                MessageBox.Show("Contrato Actualizado.");
                 limpiar();
                 
             }
@@ -142,13 +152,12 @@ namespace FeriaVirtual.Vista
             DataRowView dr = dg.SelectedItem as DataRowView;
             if (dr != null)
             {
-                txtRut.Text = dr["RUT_USUARIO"].ToString();
-                txtNombre.Text = dr["NOMBRE_USUARIO"].ToString();
-                txtAppat.Text = dr["AP_PATERNO"].ToString();
-                txtApmat.Text = dr["AP_MATERNO"].ToString();
+                txtProductorId.Text = dr["ID_PRODUCTOR"].ToString();
+                cbProductor.SelectedValue = Convert.ToInt32(dr["ID_PRODUCTOR"].ToString());
+                dpInicio.SelectedDate = Convert.ToDateTime(dr["FECHA_INICIO_CONTRATO"].ToString());
+                dpFin.SelectedDate = Convert.ToDateTime(dr["FECHA_TERMINO_CONTRATO"].ToString());
                 btnActualizar.IsEnabled = true;
                 btnIngresar.IsEnabled = false;
-                btnEliminar.IsEnabled = true; 
             }
         }
 
@@ -157,30 +166,5 @@ namespace FeriaVirtual.Vista
             limpiar();
         }
 
-        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
-        {
-            OracleConnection ora = conn.Conexion();
-            try
-            {
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_DELETE_USUARIO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Cliente Eliminado.");
-                limpiar();
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al eliminar.");
-            }
-
-            ListarContratos();
-            ora.Close();
-        }
     }
 }

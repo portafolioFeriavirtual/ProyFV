@@ -26,27 +26,19 @@
                 <Button x:Name="btnIngresar" Content="Ingresar" HorizontalAlignment="Left" Margin="80,224,0,0" VerticalAlignment="Top" Width="104" Click="BtnIngresar_Click" Height="26"/>
             </GroupBox>
             <StackPanel x:Name="stLabels" HorizontalAlignment="Left" Height="185" Margin="87,91,0,0" VerticalAlignment="Top" Width="108">
-                <Label x:Name="lblRut" Margin="0,10,0,10" FontFamily="Impact" Content="RUT"/>
-                <Label x:Name="lblNombre" Margin="0,10,0,10" FontFamily="Impact" Content="Nombre"/>
-                <Label x:Name="lblAppat" Margin="0,10,0,10" FontFamily="Impact" Content="Apellido Paterno"/>
-                <Label x:Name="lblApmat" Margin="0,10,0,10" FontFamily="Impact" Content="Apellido Materno"/>
+                <Label x:Name="lblProductor" Margin="0,10,0,10" FontFamily="Impact" Content="Productor"/>
+                <Label x:Name="lblFechaInicio" Margin="0,10,0,10" FontFamily="Impact" Content="Fecha Inicio"/>
+                <Label x:Name="lblFechaFin" Margin="0,10,0,10" FontFamily="Impact" Content="Fecha Fin"/>
             </StackPanel>
-            <StackPanel x:Name="stTextbox" HorizontalAlignment="Right" Height="185" Margin="0,91,384,0" VerticalAlignment="Top" Width="233" Grid.Column="1">
-                <TextBox x:Name="txtRut" Margin="0,15,0,10" FontFamily="Impact"/>
-                <TextBox x:Name="txtNombre" Margin="0,18,0,10" FontFamily="Impact"/>
-                <TextBox x:Name="txtAppat" Margin="0,18,0,10" FontFamily="Impact"/>
-                <TextBox x:Name="txtApmat" Margin="0,18,0,10" FontFamily="Impact"/>
+            <StackPanel x:Name="stTextbox" HorizontalAlignment="Right" Height="185" Margin="0,75,382,0" VerticalAlignment="Top" Width="233" Grid.Column="1">
+                <ComboBox x:Name="cbProductor" Margin="0,25,0,10" FontFamily="Impact"/>
+                <DatePicker x:Name="dpInicio" Margin="0,12,0,10" FontFamily="Impact"/>
+                <DatePicker x:Name="dpFin" Margin="0,12,0,10" FontFamily="Impact"/>
             </StackPanel>
         </Grid>
         <Button x:Name="btnActualizar" Content="Actualizar" Margin="237,291,367,336" Width="103" Click="BtnActualizar_Click" IsEnabled="False"/>
-        <Button x:Name="btnEliminar" Content="Eliminar" Margin="365,291,239,336" Width="103" Click="BtnEliminar_Click" IsEnabled="False"/>
         <Button x:Name="btnLimpiar" Content="Limpiar" Margin="604,291,0,336" Width="103" Click="BtnLimpiar_Click" IsEnabled="True"/>
         <DataGrid x:Name="dgContratos" Height="226" Margin="59,360,0,64" Width="724" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontFamily="Impact" IsEnabled="True" SelectionChanged="DgContratos_SelectionChanged"/>
-        <StackPanel x:Name="stLabels_Copy" HorizontalAlignment="Left" Height="186" Margin="506,86,0,0" VerticalAlignment="Top" Width="108">
-            <Label x:Name="lblPass1" Margin="0,10,0,10" FontFamily="Impact" Content="Contraseña"/>
-            <Label x:Name="lblPass2" Margin="0,10,0,10" FontFamily="Impact" Content="Repetir Contraseña"/>
-        </StackPanel>
-        <PasswordBox x:Name="txtPass1" HorizontalAlignment="Left" Margin="633,99,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2" Height="19"/>
-        <PasswordBox x:Name="txtPass2" HorizontalAlignment="Left" Margin="633,142,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtProductorId" HorizontalAlignment="Left"  Margin="569,10,0,0"  VerticalAlignment="Top" Width="45" Visibility="Visible" />
     </Grid>
 </Page>
