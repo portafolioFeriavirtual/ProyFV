@@ -56,6 +56,59 @@ namespace FeriaVirtual.Vista
             ListarTransportistas();
         }
 
+        private bool validar()
+        {
+            bool valido = true;
+            errRut.Content = "";
+            errNombre.Content = "";
+            errAppat.Content = "";
+            errApmat.Content = "";
+            errPass.Content = "";
+
+
+            if (Usuario.validaRut(txtRut.Text) == false)
+            {
+                valido = false;
+                errRut.Content = "Rut no válido";
+            }
+            if (String.IsNullOrEmpty(txtRut.Text))
+            {
+                valido = false;
+                errRut.Content = "Campo no puede estar vacío";
+            }
+            if (String.IsNullOrEmpty(txtNombre.Text))
+            {
+                valido = false;
+                errNombre.Content = "Campo no puede estar vacío";
+            }
+
+            if (String.IsNullOrEmpty(txtAppat.Text))
+            {
+                valido = false;
+                errAppat.Content = "Campo no puede estar vacío";
+            }
+
+            if (String.IsNullOrEmpty(txtApmat.Text))
+            {
+                valido = false;
+                errApmat.Content = "Camopo no puede estar vacío";
+            }
+
+            if (String.IsNullOrEmpty(txtPass1.Password.ToString()) || String.IsNullOrEmpty(txtPass2.Password.ToString()))
+            {
+                valido = false;
+                errPass.Content = "Debe llenar ambos campos";
+            }
+
+            if (!(txtPass1.Password.ToString().Equals(txtPass2.Password.ToString())))
+            {
+                valido = false;
+                errPass.Content = "Contraseñas no coinciden";
+            }
+
+            return valido;
+        }
+
         private void limpiar()
         {
             txtRut.Text = "";
@@ -71,69 +124,96 @@ namespace FeriaVirtual.Vista
 
         private void BtnIngresar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            try
+
+            bool valido;
+
+            valido = validar();
+
+            if (valido == true)
             {
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errRut.Content = "";
+                    errNombre.Content = "";
+                    errAppat.Content = "";
+                    errApmat.Content = "";
+                    errPass.Content = "";
 
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Transportista Ingresado.");
+                    ora.Open();
+                    OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
+                    comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
+                    comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
+                    comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
+                    comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Transportista Ingresado.");
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al ingresar.");
+                }
+
+
+                ListarTransportistas();
+                ora.Close();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al ingresar.");
-            }
-
-
-            ListarTransportistas();
-            ora.Close();
 
         }
 
         private void BtnActualizar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            try
+            bool valido;
+
+            valido = validar();
+
+            if (valido == true)
             {
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errRut.Content = "";
+                    errNombre.Content = "";
+                    errAppat.Content = "";
+                    errApmat.Content = "";
+                    errPass.Content = "";
 
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Transportista Actualizado.");
-                limpiar();
-                
+                    ora.Open();
+                    OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
+                    comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombre.Text;
+                    comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = txtAppat.Text;
+                    comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = txtApmat.Text;
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
+                    comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
+
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Transportista Actualizado.");
+                    limpiar();
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al actualizar.");
+                }
+
+
+                ListarTransportistas();
+                ora.Close();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al actualizar.");
-            }
-
-
-            ListarTransportistas();
-            ora.Close();
         }
 
         private void DgTransportistas_SelectionChanged(object sender, SelectionChangedEventArgs e)

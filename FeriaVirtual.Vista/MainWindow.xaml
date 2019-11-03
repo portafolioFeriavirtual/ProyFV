@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FeriaVirtual.Vista"
         mc:Ignorable="d"
-        Title="MainWindow" Height="745.798" Width="1071.008" Background="Green">
-        <Grid HorizontalAlignment="Left" Width="200">
-        <GroupBox BorderThickness="2" BorderBrush="Aqua" VerticalAlignment="Center">
+        Title="MainWindow" Height="900" Width="1100" Background="Green">
+    <Grid HorizontalAlignment="Left" Width="200">
+        <GroupBox BorderThickness="2" BorderBrush="Aqua" VerticalAlignment="Center" Margin="10,88,-10,197" Height="484">
             <GroupBox.Header>
                 <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Mantenedores</TextBlock>
             </GroupBox.Header>
-            <StackPanel Grid.Column="0" Height="600" VerticalAlignment="Top">
+            <StackPanel Grid.Column="0" Height="500" VerticalAlignment="Top">
                 <Button Name="btnClientes" Height="40" Margin="0,50,0,10" FontFamily="Impact" Click="BtnClientes_Click">Clientes</Button>
                 <Button Name="btnTransportistas" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnTransportistas_Click">Transportistas</Button>
                 <Button Name="btnProductores" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnProductores_Click">Productores</Button>
@@ -20,6 +20,17 @@
                 <Button Name="btnContratos" Height="40" Margin="0,10,0,10" FontFamily="Impact" Click="BtnContratos_Click">Contratos</Button>
             </StackPanel>
         </GroupBox>
-        <Frame x:Name ="Main" Height="650" Width="850"  RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" Margin="205,22,-855,43"/>
+
+        <GroupBox BorderThickness="2" BorderBrush="Aqua" VerticalAlignment="Top" HorizontalAlignment="Left" Height="82" Margin="210,6,-846,0" Width="836">
+            <GroupBox.Header>
+                <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Procesos</TextBlock>
+            </GroupBox.Header>
+            <WrapPanel Grid.Column="0" Height="600" VerticalAlignment="Top">
+                <Button Name="btnProcesoVenta" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnProcesosVenta_Click" Width="200">Procesos de Venta</Button>
+                <Button Name="btnSubasta" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnSubasta_Click" Width="200">Subasta Transportes</Button>
+                <Button Name="btnVentaInterna" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnVentaInterna_Click" Width="200">Ventas Internas</Button>
+            </WrapPanel>
+        </GroupBox>
+        <Frame x:Name ="Main" Height="668" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="215,118,-870,83" Width="855"/>
     </Grid>
 </Window>

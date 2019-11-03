@@ -48,5 +48,10 @@
         </StackPanel>
         <PasswordBox x:Name="txtPass1" HorizontalAlignment="Left" Margin="633,99,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2" Height="19"/>
         <PasswordBox x:Name="txtPass2" HorizontalAlignment="Left" Margin="633,142,0,0" VerticalAlignment="Top" Width="150" Grid.ColumnSpan="2"/>
+        <Label x:Name="errRut" HorizontalAlignment="Left" Margin="237,125,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errNombre" HorizontalAlignment="Left" Margin="237,170,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errAppat" HorizontalAlignment="Left" Margin="237,215,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errApmat" HorizontalAlignment="Left" Margin="237,260,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errPass" HorizontalAlignment="Left" Margin="604,170,0,0" VerticalAlignment="Top" Width="176" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14" Grid.ColumnSpan="2"/>
     </Grid>
 </Page>

@@ -21,7 +21,7 @@
 
             <GroupBox BorderThickness="2" BorderBrush="Aqua" Height="600" Width="800"  Margin="24,40,26,10" VerticalAlignment="Center" Grid.ColumnSpan="2">
                 <GroupBox.Header>
-                    <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Ficha Clientes</TextBlock>
+                    <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Ficha Contratos</TextBlock>
                 </GroupBox.Header>
                 <Button x:Name="btnIngresar" Content="Ingresar" HorizontalAlignment="Left" Margin="80,224,0,0" VerticalAlignment="Top" Width="104" Click="BtnIngresar_Click" Height="26"/>
             </GroupBox>
@@ -39,6 +39,9 @@
         <Button x:Name="btnActualizar" Content="Actualizar" Margin="237,291,367,336" Width="103" Click="BtnActualizar_Click" IsEnabled="False"/>
         <Button x:Name="btnLimpiar" Content="Limpiar" Margin="604,291,0,336" Width="103" Click="BtnLimpiar_Click" IsEnabled="True"/>
         <DataGrid x:Name="dgContratos" Height="226" Margin="59,360,0,64" Width="724" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.ColumnSpan="2" FontFamily="Impact" IsEnabled="True" SelectionChanged="DgContratos_SelectionChanged"/>
-        <TextBox x:Name="txtProductorId" HorizontalAlignment="Left"  Margin="569,10,0,0"  VerticalAlignment="Top" Width="45" Visibility="Visible" />
+        <TextBox x:Name="txtProductorId"  HorizontalAlignment="Left"  Margin="569,10,0,0"  VerticalAlignment="Top" Width="45" Visibility="Hidden" />
+        <Label x:Name="errProductor" HorizontalAlignment="Left" Margin="237,121,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errFechaInicio" HorizontalAlignment="Left" Margin="237,168,0,0" VerticalAlignment="Top" Width="228" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
+        <Label x:Name="errFechaFin" HorizontalAlignment="Left" Margin="237,215,0,0" VerticalAlignment="Top" Width="377" Height="24" FontFamily="Helvetica" Foreground="Red" FontSize="14"/>
     </Grid>
 </Page>

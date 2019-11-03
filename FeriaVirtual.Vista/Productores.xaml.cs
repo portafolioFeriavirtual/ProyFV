@@ -55,6 +55,54 @@ namespace FeriaVirtual.Vista
             ListarProductores();
         }
 
+        private bool validar()
+        {
+            bool valido = true;
+            errRut.Content = "";
+            errNombreUsuario.Content = "";
+            errNombreProductor.Content = "";
+            errPass.Content = "";
+
+
+            if (Usuario.validaRut(txtRut.Text) == false)
+            {
+                valido = false;
+                errRut.Content = "Rut no válido";
+            }
+            if (String.IsNullOrEmpty(txtRut.Text))
+            {
+                valido = false;
+                errRut.Content = "Campo no puede estar vacío";
+            }
+            if (String.IsNullOrEmpty(txtNombreUsuario.Text))
+            {
+                valido = false;
+                errNombreUsuario.Content = "Campo no puede estar vacío";
+            }
+
+            if (String.IsNullOrEmpty(txtNombreProductor.Text))
+            {
+                valido = false;
+                errNombreProductor.Content = "Campo no puede estar vacío";
+            }
+   
+
+            if (String.IsNullOrEmpty(txtPass1.Password.ToString()) || String.IsNullOrEmpty(txtPass2.Password.ToString()))
+            {
+                valido = false;
+                errPass.Content = "Debe llenar ambos campos";
+            }
+
+            if (!(txtPass1.Password.ToString().Equals(txtPass2.Password.ToString())))
+            {
+                valido = false;
+                errPass.Content = "Contraseñas no coinciden";
+            }
+
+            return valido;
+        }
+
+
         private void limpiar()
         {
             txtRut.Text = "";
@@ -69,95 +117,118 @@ namespace FeriaVirtual.Vista
 
         private void BtnIngresar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            try
+            bool valido;
+
+            valido = validar();
+
+            if (valido == true)
             {
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errRut.Content = "";
+                    errNombreUsuario.Content = "";
+                    errNombreProductor.Content = "";
+                    errPass.Content = "";
+
+                    ora.Open();
+                    OracleCommand comando = new OracleCommand("SP_INGRESAR_USUARIO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
+                    comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
+                    comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
+                    comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
+                    comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
 
-                comando.ExecuteNonQuery();
-                int userID = Convert.ToInt32(comando.Parameters["OUT_ID"].Value);
-                comando.Parameters.Clear();
+                    comando.ExecuteNonQuery();
+                    int userID = Convert.ToInt32(comando.Parameters["OUT_ID"].Value);
+                    comando.Parameters.Clear();
 
-                OracleCommand comando2 = new OracleCommand("SP_INGRESAR_PRODUCTOR", ora);
-                comando2.CommandType = System.Data.CommandType.StoredProcedure;
-                comando2.Parameters.Add("P_ID_USUARIO", OracleType.Number).Value = userID;
-                comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
-                comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
-                comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                    OracleCommand comando2 = new OracleCommand("SP_INGRESAR_PRODUCTOR", ora);
+                    comando2.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando2.Parameters.Add("P_ID_USUARIO", OracleType.Number).Value = userID;
+                    comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
+                    comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
+                    comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
-                               
-                comando2.ExecuteNonQuery();
-                MessageBox.Show("Productor Ingresado.");
 
+                    comando2.ExecuteNonQuery();
+                    MessageBox.Show("Productor Ingresado.");
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al ingresar.");
+                }
+
+
+                ListarProductores();
+                ora.Close();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al ingresar.");
-            }
-
-
-            ListarProductores();
-            ora.Close();
-
         }
 
         private void BtnActualizar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            try
+            bool valido;
+
+            valido = validar();
+
+            if (valido == true)
             {
-                ora.Open();
 
-                OracleCommand comando2 = new OracleCommand("SP_UPDATE_PRODUCTOR", ora);
-                comando2.CommandType = System.Data.CommandType.StoredProcedure;
-                comando2.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number, 4).Value = Convert.ToInt32(txtProductorId.Text);
-                comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
-                comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
-                comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
-                comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errRut.Content = "";
+                    errNombreUsuario.Content = "";
+                    errNombreProductor.Content = "";
+                    errPass.Content = "";
 
-                comando2.ExecuteNonQuery();
-                
+                    ora.Open();
+                    OracleCommand comando2 = new OracleCommand("SP_UPDATE_PRODUCTOR", ora);
+                    comando2.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando2.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number, 4).Value = Convert.ToInt32(txtProductorId.Text);
+                    comando2.Parameters.Add("P_NOMBRE_PRODUCTOR", OracleType.VarChar).Value = txtNombreProductor.Text;
+                    comando2.Parameters.Add("p_ESTADO_PRODUCTOR", OracleType.Number).Value = 1;
+                    comando2.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
+                    comando2.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
 
-                OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
-                comando.Parameters.Add("P_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
-                comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
-                comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
-                comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
-                comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
-                comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                    comando2.ExecuteNonQuery();
 
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Productor Actualizado.");
-                limpiar();
-                
+
+                    OracleCommand comando = new OracleCommand("SP_UPDATE_USUARIO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_RUT", OracleType.VarChar).Value = txtRut.Text;
+                    comando.Parameters.Add("P_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
+                    comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
+                    comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
+                    comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Productor Actualizado.");
+                    limpiar();
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al actualizar.");
+                }
+
+
+                ListarProductores();
+                ora.Close();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al actualizar.");
-            }
-
-
-            ListarProductores();
-            ora.Close();
         }
 
         private void DgProductores_SelectionChanged(object sender, SelectionChangedEventArgs e)

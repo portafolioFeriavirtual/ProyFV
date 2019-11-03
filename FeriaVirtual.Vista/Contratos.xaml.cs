@@ -79,6 +79,40 @@ namespace FeriaVirtual.Vista
             ListarProductoresCB();
         }
 
+        private bool validar()
+        {
+            bool valido = true;
+            errProductor.Content = "";
+            errFechaInicio.Content = "";
+            errFechaFin.Content = "";
+
+            if (cbProductor.SelectedValue == null)
+            {
+                valido = false;
+                errProductor.Content = "Debe seleccionar un productor";
+            }
+            if (dpInicio.SelectedDate == null)
+            {
+                valido = false;
+                errFechaInicio.Content = "Debe seleccionar fecha de inicio";
+            }
+            if (dpFin.SelectedDate == null)
+            {
+                valido = false;
+                errFechaFin.Content = "Debe seleccionar fecha de término";
+            }
+            if (dpInicio.SelectedDate > dpFin.SelectedDate)
+            {
+                valido = false;
+                errFechaFin.Content = "Fecha de inicio no puede ser mayor a fecha de término";
+            }
+
+
+            return valido;
+        }
+
+
+
         private void limpiar()
         {
             cbProductor.SelectedValue = null;
@@ -90,60 +124,81 @@ namespace FeriaVirtual.Vista
 
         private void BtnIngresar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            /*try
-            {*/
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_INGRESAR_CONTRATO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
-                comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
-                comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = cbProductor.SelectedValue;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+            bool valido;
 
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Contrato Ingresado.");
+            valido = validar();
 
-            /*}
-            catch (Exception)
+            if (valido)
             {
-                MessageBox.Show("Error al ingresar.");
-            }*/
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errProductor.Content = "";
+                    errFechaInicio.Content = "";
+                    errFechaFin.Content = "";
+
+                    ora.Open();
+                    OracleCommand comando = new OracleCommand("SP_INGRESAR_CONTRATO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
+                    comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
+                    comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = cbProductor.SelectedValue;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Contrato Ingresado.");
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al ingresar.");
+                }
 
 
-            ListarContratos();
-            ora.Close();
-
+                ListarContratos();
+                ora.Close();
+            }
         }
 
         private void BtnActualizar_Click(object sender, RoutedEventArgs e)
         {
-            OracleConnection ora = conn.Conexion();
-            try
+            bool valido;
+
+            valido = validar();
+
+            if (valido)
             {
-                ora.Open();
-                OracleCommand comando = new OracleCommand("SP_UPDATE_CONTRATO", ora);
-                comando.CommandType = System.Data.CommandType.StoredProcedure;
-                comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = Convert.ToInt32(txtProductorId.Text);
-                comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
-                comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
-                comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
-                comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                OracleConnection ora = conn.Conexion();
+                try
+                {
+                    errProductor.Content = "";
+                    errFechaInicio.Content = "";
+                    errFechaFin.Content = "";
 
-                comando.ExecuteNonQuery();
-                MessageBox.Show("Contrato Actualizado.");
-                limpiar();
-                
+                    ora.Open();
+                    OracleCommand comando = new OracleCommand("SP_UPDATE_CONTRATO", ora);
+                    comando.CommandType = System.Data.CommandType.StoredProcedure;
+                    comando.Parameters.Add("P_ID_PRODUCTOR", OracleType.Number).Value = Convert.ToInt32(txtProductorId.Text);
+                    comando.Parameters.Add("P_FECHA_INICIO", OracleType.DateTime).Value = dpInicio.SelectedDate;
+                    comando.Parameters.Add("P_FECHA_TERMINO", OracleType.DateTime).Value = dpFin.SelectedDate;
+                    comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+
+                    comando.ExecuteNonQuery();
+                    MessageBox.Show("Contrato Actualizado.");
+                    limpiar();
+
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error al actualizar.");
+                }
+
+
+                ListarContratos();
+                ora.Close();
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Error al actualizar.");
-            }
-
-
-            ListarContratos();
-            ora.Close();
         }
 
         private void DgContratos_SelectionChanged(object sender, SelectionChangedEventArgs e)
