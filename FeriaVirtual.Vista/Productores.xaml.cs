@@ -138,7 +138,7 @@ namespace FeriaVirtual.Vista
                     comando.Parameters.Add("p_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
                     comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
                     comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
-                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = BCrypt.Net.BCrypt.HashPassword(txtPass1.Password.ToString());
                     comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
                     comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
                     comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
@@ -209,7 +209,7 @@ namespace FeriaVirtual.Vista
                     comando.Parameters.Add("P_NOMBRE", OracleType.VarChar).Value = txtNombreUsuario.Text;
                     comando.Parameters.Add("p_AP_PATERNO", OracleType.VarChar).Value = " ";
                     comando.Parameters.Add("p_AP_MATERNO", OracleType.VarChar).Value = " ";
-                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = txtPass1.Password.ToString(); // falta validar passwords iguales
+                    comando.Parameters.Add("p_CONTRASENIA", OracleType.VarChar).Value = BCrypt.Net.BCrypt.HashPassword(txtPass1.Password.ToString());
                     comando.Parameters.Add("p_ESTADO", OracleType.Number).Value = 1;
                     comando.Parameters.Add("p_ROL", OracleType.Number).Value = 3;
                     comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 200).Direction = System.Data.ParameterDirection.Output;
