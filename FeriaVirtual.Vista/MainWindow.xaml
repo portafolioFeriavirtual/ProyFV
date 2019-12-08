@@ -23,13 +23,10 @@
 
         <GroupBox BorderThickness="2" BorderBrush="Aqua" VerticalAlignment="Top" HorizontalAlignment="Left" Height="82" Margin="210,6,-846,0" Width="836">
             <GroupBox.Header>
-                <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18">Procesos</TextBlock>
+                <TextBlock Foreground="Orange" FontWeight="Bold" FontFamily="Impact" FontSize="18"></TextBlock>
+                
             </GroupBox.Header>
-            <WrapPanel Grid.Column="0" Height="600" VerticalAlignment="Top">
-                <Button Name="btnProcesoVenta" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnProcesosVenta_Click" Width="200">Procesos de Venta</Button>
-                <Button Name="btnSubasta" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnSubasta_Click" Width="200">Subasta Transportes</Button>
-                <Button Name="btnVentaInterna" Height="40" Margin="50,0,0,10" FontFamily="Impact" Click="BtnVentaInterna_Click" Width="200">Ventas Internas</Button>
-            </WrapPanel>
+            <Label Content="Organización Maipo Grande" FontFamily="Impact" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="24"/>
         </GroupBox>
         <Frame x:Name ="Main" Height="668" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="215,118,-870,83" Width="855"/>
     </Grid>

@@ -58,20 +58,7 @@ namespace FeriaVirtual.Vista
             Main.Content = new Contratos();
         }
 
-        private void BtnProcesosVenta_Click(object sender, RoutedEventArgs e)
-        {
-            Main.Content = new Contratos();
-        }
-
-        private void BtnSubasta_Click(object sender, RoutedEventArgs e)
-        {
-            Main.Content = new Contratos();
-        }
-
-        private void BtnVentaInterna_Click(object sender, RoutedEventArgs e)
-        {
-            Main.Content = new Contratos();
-        }
+ 
 
     }
 }

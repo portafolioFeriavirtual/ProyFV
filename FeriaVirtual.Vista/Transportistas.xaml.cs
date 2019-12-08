@@ -152,15 +152,18 @@ namespace FeriaVirtual.Vista
                     comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
                     comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                     comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
+                    comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
-                    comando.ExecuteNonQuery();
+
+
+                comando.ExecuteNonQuery();
                     MessageBox.Show("Transportista Ingresado.");
 
-                }
+                 }
                 catch (Exception)
-                {
-                    MessageBox.Show("Error al ingresar.");
-                }
+                 {
+                     MessageBox.Show("Error al ingresar.");
+                 }
 
 
                 ListarTransportistas();
@@ -198,7 +201,6 @@ namespace FeriaVirtual.Vista
                     comando.Parameters.Add("p_ROL", OracleType.Number).Value = 2;
                     comando.Parameters.Add("OUT_GLOSA", OracleType.VarChar, 50).Direction = System.Data.ParameterDirection.Output;
                     comando.Parameters.Add("OUT_ESTADO", OracleType.Number, 1).Direction = System.Data.ParameterDirection.Output;
-                    comando.Parameters.Add("OUT_ID", OracleType.Number, 4).Direction = System.Data.ParameterDirection.Output;
 
                     comando.ExecuteNonQuery();
                     MessageBox.Show("Transportista Actualizado.");
